@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <title>Transplante de Microexpressões — p5.js</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- p5.js (CDN oficial). Se quiser offline, baixe p5.min.js e referencie localmente. -->
+    <script src="p5.min.js" ></script>
+    <style>
+      html, body { margin: 0; padding: 0; background: #0e0e0e; color: #eaeaea; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; }
+      #app { display: grid; place-items: center; min-height: 100vh; }
+      .hint {
+        position: fixed; inset: 0; display: grid; place-items: center;
+        background: rgba(0,0,0,.6); color: #fff; text-align: center; padding: 24px;
+        font-size: 16px; line-height: 1.4;
+      }
+      .hint .card {
+        background: #111; padding: 20px 24px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.45);
+        max-width: 720px;
+      }
+      .hint button {
+        margin-top: 12px; background: #1f6feb; color: #fff; border: none; padding: 10px 16px; border-radius: 10px; cursor: pointer;
+      }
+      canvas { outline: 1px solid #1a1a1a; }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <!-- o canvas do p5 aparece aqui -->
+    </div>
+
+    <div id="gate" class="hint">
+      <div class="card">
+        <h2 style="margin:0 0 8px 0;">Clique para iniciar os vídeos</h2>
+        <p style="margin:0;">Por políticas do navegador, é necessário um gesto do usuário para começar.<br/>Os vídeos serão iniciados sem som e em loop.</p>
+        <button id="startBtn">Iniciar</button>
+        <p style="opacity:.7; margin-top:8px;">Atalhos: C troca modo • 1/2 threshold • 3/4 cell • 5/6 scale • B blur • D/E dilate/erode • 7/8 suavização temporal</p>
+      </div>
+    </div>
+
+    <script src="sketch.js"></script>
+  </body>
+</html>
