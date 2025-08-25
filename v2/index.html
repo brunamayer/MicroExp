@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <title>Transplante de Microexpressões — v3 (simples)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <link rel="icon" href="data:,">
+
+    <!-- p5.js -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"></script>
+
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0b0b0b;
+        --fg: #eaeaea;
+        --muted: #9aa4af;
+        --card: #141414;
+        --stroke: #262626;
+        --accent: #1f6feb;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin:0; padding:0; background:var(--bg); color:var(--fg); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+      #app { min-height: 100svh; display:grid; place-items:center; }
+      canvas { touch-action:none; display:block; }
+
+      .overlay {
+        position:fixed; inset:0; display:grid; place-items:center; background:rgba(0,0,0,.86);
+        padding:20px; z-index:10;
+      }
+      .card {
+        width:min(760px, 92vw); background:var(--card); border:1px solid var(--stroke);
+        border-radius:16px; padding:18px 20px; box-shadow:0 16px 50px rgba(0,0,0,.45);
+      }
+      h1 { font-size:18px; margin:0 0 8px 0; }
+      p  { font-size:14px; line-height:1.5; margin:0 0 10px 0; color:#cfcfcf;}
+      label { font-size:14px; display:flex; gap:10px; align-items:flex-start; color:#ddd;}
+      input[type="checkbox"]{ transform: translateY(3px) scale(1.1); }
+      button {
+        margin-top:12px; width:100%;
+        background:var(--accent); color:#fff; border:none; padding:12px 16px; border-radius:12px;
+        font-size:16px; font-weight:600; cursor:pointer; opacity:.6; pointer-events:none; transition:.2s;
+      }
+      button.enabled { opacity:1; pointer-events:auto; }
+      .meta { font-size:12px; color:var(--muted); margin-top:6px; }
+
+      /* Enquadramento */
+      .frame-overlay {
+        position:fixed; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column;
+        pointer-events:none; z-index:5;
+      }
+      .frame-guide {
+        width:min(70vmin, 85vw); aspect-ratio: 1 / 1;
+        border:2px dashed rgba(255,255,255,.8); border-radius:12px;
+        box-shadow: 0 0 0 9999px rgba(0,0,0,.25) inset;
+      }
+      .frame-tip {
+        margin-top:12px; color:#d0d0d0; font-size:14px; text-align:center; text-shadow:0 1px 0 #000;
+      }
+      .frame-actions {
+        position:fixed; bottom:24px; left:0; right:0; display:grid; place-items:center; z-index:11;
+      }
+      .frame-actions button {
+        width: clamp(180px, 40vw, 260px);
+        pointer-events:auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <!-- 1) Tela de consentimento -->
+    <div id="gate" class="overlay">
+      <div class="card">
+        <h1>Transplante de Microexpressões — versão interativa</h1>
+        <p>Ao iniciar, sua câmera frontal será usada como <strong>Vídeo A</strong>. Um dos vídeos da série será sorteado como <strong>Vídeo B</strong>. Onde houver micro­movimento no seu rosto, o outro rosto surgirá.</p>
+        <p>Todo o processamento ocorre <em>no seu dispositivo</em>; nada é enviado a servidores.</p>
+        <label>
+          <input id="consent" type="checkbox"/>
+          <span>Autorizo o uso temporário da minha imagem via câmera <em>apenas nesta experiência</em>, ciente de que o processamento é local e não há armazenamento.</span>
+        </label>
+        <button id="startBtn">Iniciar</button>
+        <div class="meta">Dica: em iPhone/iPad, acesse via HTTPS para liberar a câmera.</div>
+      </div>
+    </div>
+
+    <!-- 2) Tela de enquadramento (quadrado guia + OK) -->
+    <div id="frameUI" class="frame-overlay" style="display:none">
+      <div class="frame-guide" aria-hidden="true"></div>
+      <div class="frame-tip">Aproxime ou afaste o rosto até preencher o quadrado.<br/>Quando estiver bom, toque <strong>OK</strong>.</div>
+      <div class="frame-actions">
+        <button id="okFrameBtn" class="enabled">OK</button>
+      </div>
+    </div>
+
+    <!-- sketch -->
+    <script defer src="./sketch.js"></script>
+
+    <script>
+      // Habilita botão após consentimento
+      window.addEventListener('DOMContentLoaded', () => {
+        const consent = document.getElementById('consent');
+        const startBtn = document.getElementById('startBtn');
+        consent.addEventListener('change', () => {
+          if (consent.checked) startBtn.classList.add('enabled');
+          else startBtn.classList.remove('enabled');
+        });
+      });
+    </script>
+  </body>
+</html>
